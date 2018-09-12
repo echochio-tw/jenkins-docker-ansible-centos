@@ -4,7 +4,7 @@
 VAGRANTFILE_API_VERSION = "2"
 
 Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
-  config.vm.box = "ubuntu/trusty64"
+  config.vm.box = "bento/centos-7.5"
   # If you run into issues with Ansible complaining about executable permissions,
   # comment the following statement and uncomment the next one.
   config.vm.synced_folder ".", "/vagrant"
