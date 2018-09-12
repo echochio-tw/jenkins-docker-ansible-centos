@@ -26,3 +26,12 @@
     name: "docker-ce.x86_64"
     state: present
   notify: restart docker
+- name: create sysconfig file
+  template:
+    src: sysconfig.j2
+    dest: /etc/sysconfig/docker
+- name: start and enable docker
+  service:
+    name: docker
+    state: started
+    enabled: yes
