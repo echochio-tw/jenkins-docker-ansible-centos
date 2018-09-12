@@ -1,8 +1,7 @@
 #!/bin/bash
 
 echo "Installing Ansible..."
-apt-get install -y software-properties-common
-apt-add-repository ppa:ansible/ansible
-apt-get update
-apt-get install -y ansible
+yum -y install epel-release
+yum -y update
+yum -y install ansible python-netaddr git
 cp /vagrant/ansible/ansible.cfg /etc/ansible/ansible.cfg
