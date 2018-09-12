@@ -1,23 +1,60 @@
-- name: ensure required packages
-  yum:
-    name: "{{ item }}"
-    state: present
-  with_items:
-    - yum-utils
-    - device-mapper-persistent-data
-    - lvm2
-- name: add docker ce repo
-  shell: yum-config-manager --add-repo https://download.docker.com/linux/centos/docker-ce.repo
-  args:
-    creates: /etc/yum.repos.d/docker-ce.repo
-  register: docker_yum_repo
-- name: make yum cache fast
-  shell: yum makecache fast
-  when: docker_yum_repo.changed
 - name: install python-pip
   yum:
     name: "python-pip"
     state: present
+- name: Install yum utils
+  yum:
+    name: yum-utils
+    state: latest
+- name: Install device-mapper-persistent-data
+  yum:
+    name: device-mapper-persistent-data
+    state: latest
+- name: Install lvm2
+  yum:
+    name: lvm2
+    state: latest
+- name: Add Docker repo
+  get_url:
+     url: https://download.docker.com/linux/centos/docker-ce.repo
+     dest: /etc/yum.repos.d/docer-ce.repo
+     become: yes
+- name: Enable Docker Edge repo
+  ini_file:
+     dest: /etc/yum.repos.d/docer-ce.repo
+     section: 'docker-ce-edge'
+     option: enabled
+     value: 0
+     become: yes
+- name: Enable Docker Test repo
+   ini_file:
+     dest: /etc/yum.repos.d/docer-ce.repo
+     section: 'docker-ce-test'
+     option: enabled
+     value: 0
+     become: yes
+- name: Install Docker
+  package:
+     name: docker-ce
+     state: latest
+     become: yes
+- name: Install docker-compose
+  pip:
+    name: docker-compose
+- name: Start Docker servic
+  service:
+    name: docker
+    state: started
+    enabled: yes
+    become: yes
+- name: Add user vagrant to docker group
+  user:
+     name: vagrant
+     groups: docker
+     append: yes
+     become: yes
+
+
 - name: Install docker-compose
   pip:
     name: docker-compose
