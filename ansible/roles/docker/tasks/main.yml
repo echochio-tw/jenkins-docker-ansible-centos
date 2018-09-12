@@ -1,38 +1,25 @@
-- name: Add Docker repository and update apt cache
-  apt_repository:
-    repo: deb https://apt.dockerproject.org/repo ubuntu-trusty main
-    update_cache: yes
-    state: present
-  tags: [docker]
-
-- name: Docker is present
-  apt:
-    name: docker-engine
+- name: "Installing Docker Prerequisite packages"
+  yum:
+    name: "{{ item }}"
     state: latest
-    force: yes
+    with_items:
+    - yum-utils
+    - device-mapper-persistent-data
+    - lvm2
+    - name: "Configuring docker-ce repo"
   tags: [docker]
+  get_url:
+  url: https://download.docker.com/linux/centos/docker-ce.repo
+  dest: /etc/yum.repos.d/docker-ce.repo
+  mode: 0644
 
-- name: Python-pip is present
-  apt: name=python-pip state=present
-  tags: [docker]
+- name: " Installing Docker latest version"
+  yum:
+  name: docker-ce
+  state: present
 
-- name: Debian docker-py is present
-  pip:
-    name: docker-py
-    version: 1.10.1
-    state: present
-  tags: [docker]
-
-- name: Files are present
-  copy:
-    src: docker
-    dest: /etc/default/docker
-  register: copy_result
-  tags: [docker]
-
-- name: Docker service is restarted
+- name: " Starting and Enabling Docker service"
   service:
-    name: docker
-    state: restarted
-  when: copy_result|changed
-  tags: [docker]
+  name: docker
+  state: started
+  enabled: yes
