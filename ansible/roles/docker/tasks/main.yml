@@ -27,7 +27,7 @@
      value: 0
      become: yes
 - name: Enable Docker Test repo
-   ini_file:
+  ini_file:
      dest: /etc/yum.repos.d/docer-ce.repo
      section: 'docker-ce-test'
      option: enabled
