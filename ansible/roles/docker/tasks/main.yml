@@ -14,6 +14,13 @@
 - name: make yum cache fast
   shell: yum makecache fast
   when: docker_yum_repo.changed
+- name: install python-pip
+  yum:
+    name: "python-pip"
+    state: present
+- name: Install docker-compose
+  pip:
+    name: docker-compose
 - name: install docker ce
   yum:
     name: "docker-ce.x86_64"
