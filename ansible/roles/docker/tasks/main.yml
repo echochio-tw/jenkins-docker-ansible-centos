@@ -25,14 +25,10 @@
 - name: Install docker-compose
   pip:
     name: docker-compose
-- name: Install docker-compose
-  pip:
-    name: docker-compose
 - name: install docker ce
   yum:
     name: "docker-ce.x86_64"
     state: present
-  notify: restart docker
 - name: start and enable docker
   service:
     name: docker
