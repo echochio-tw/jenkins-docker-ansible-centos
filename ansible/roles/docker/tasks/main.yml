@@ -22,27 +22,9 @@
 - name: make yum cache fast
   shell: yum makecache fast
   when: docker_yum_repo.changed
-- name: Install Docker
-  yum:
-     name: docker-ce
-     state: present
 - name: Install docker-compose
   pip:
     name: docker-compose
-- name: Start Docker servic
-  service:
-    name: docker
-    state: started
-    enabled: yes
-    become: yes
-- name: Add user vagrant to docker group
-  user:
-     name: vagrant
-     groups: docker
-     append: yes
-     become: yes
-
-
 - name: Install docker-compose
   pip:
     name: docker-compose
@@ -51,10 +33,6 @@
     name: "docker-ce.x86_64"
     state: present
   notify: restart docker
-- name: create sysconfig file
-  template:
-    src: sysconfig.j2
-    dest: /etc/sysconfig/docker
 - name: start and enable docker
   service:
     name: docker
