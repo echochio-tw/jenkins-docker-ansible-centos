@@ -29,6 +29,8 @@
   yum:
     name: "docker-ce.x86_64"
     state: present
+- name: Creates directory
+  file: path=/etc/docker state=directory 
 - name: 'prepare default daemon configuration'
   copy:
     src: 'daemon.json'
