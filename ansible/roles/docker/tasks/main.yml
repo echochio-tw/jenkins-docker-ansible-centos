@@ -29,6 +29,10 @@
   yum:
     name: "docker-ce.x86_64"
     state: present
+- name: 'prepare default daemon configuration'
+  copy:
+    src: 'daemon.json'
+    dest: '/etc/docker/daemon.json'
 - name: start and enable docker
   service:
     name: docker
