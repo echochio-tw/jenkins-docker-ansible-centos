@@ -1,0 +1,35 @@
+- name: Install yum utils
+  yum:
+    name: yum-utils
+    state: latest
+- name: Install device-mapper-persistent-data
+  yum:
+    name: device-mapper-persistent-data
+    state: latest
+- name: Install lvm2
+  yum:
+    name: lvm2
+    state: latest
+- name: add docker ce repo
+  shell: yum-config-manager --add-repo https://download.docker.com/linux/centos/docker-ce.repo
+  args:
+    creates: /etc/yum.repos.d/docker-ce.repo
+  register: docker_yum_repo
+- name: make yum cache fast
+  shell: yum makecache fast
+  when: docker_yum_repo.changed
+- name: install docker ce
+  yum:
+    name: "docker-ce.x86_64"
+    state: present
+- name: Creates directory
+  file: path=/etc/docker state=directory 
+- name: 'prepare default daemon configuration'
+  copy:
+    src: 'daemon.json'
+    dest: '/etc/docker/daemon.json'
+- name: start and enable docker
+  service:
+    name: docker
+    state: started
+    enabled: yes
