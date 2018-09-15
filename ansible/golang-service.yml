@@ -2,5 +2,6 @@
   remote_user: vagrant
   become: yes
   roles:
-    - docker2
+    - enablerepo
+    - docker
     - books-service
