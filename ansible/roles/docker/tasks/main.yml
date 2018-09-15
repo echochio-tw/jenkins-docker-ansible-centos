@@ -1,3 +1,5 @@
+- name: Add repository
+  shell: yum -y --enablerepo=extras install epel-release
 - name: install python-pip
   yum:
     name: "python-pip"
