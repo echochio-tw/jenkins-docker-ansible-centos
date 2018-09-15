@@ -1,2 +1,0 @@
-  - name: Add repository
-    shell: yum -y --enablerepo=extras install epel-releas
