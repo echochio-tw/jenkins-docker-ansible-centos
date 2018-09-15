@@ -4,4 +4,4 @@
   roles:
     - enablerepo
     - docker
-    - books-service
+    - go-service
